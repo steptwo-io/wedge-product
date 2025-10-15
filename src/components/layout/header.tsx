@@ -59,17 +59,18 @@ export function Header() {
   }, [clientId])
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 w-full border-b border-primary/20 bg-gradient-to-r from-background via-background/95 to-background/90 backdrop-blur-xl shadow-lg shadow-primary/5">
       <div className="container mx-auto px-4">
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3 group">
-            <div className="p-2 rounded-xl bg-gradient-to-br from-primary to-secondary group-hover:scale-105 transition-transform">
-              <TrendingUp className="h-6 w-6 text-white" />
+          <Link href="/" className="flex items-center space-x-4 group">
+            <div className="relative p-3 rounded-2xl bg-gradient-to-br from-primary via-primary/90 to-secondary group-hover:scale-110 transition-all duration-300 shadow-lg shadow-primary/25">
+              <TrendingUp className="h-7 w-7 text-white" />
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </div>
-            <div className="flex items-center space-x-2">
-              <span className="text-2xl font-bold gradient-text">Pulses</span>
-              <span className="text-sm text-muted-foreground font-medium">by StepTwo</span>
+            <div className="flex flex-col">
+              <span className="text-3xl font-bold gradient-text tracking-tight">Pulses</span>
+              <span className="text-sm text-muted-foreground font-medium -mt-1">by StepTwo</span>
             </div>
           </Link>
           
