@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Pulses by StepTwo - Financial Markets Community
 
 A modern, full-featured financial markets community built with Next.js, TypeScript, and Prisma. Pulses by StepTwo serves as a centralized platform for investors to discuss stocks, share picks, showcase portfolios, and build model portfolios.
@@ -228,3 +229,7 @@ For support, email support@steptwo.io or join our community discussions.
 ---
 
 **Wedge** - Building the future of financial community platforms, one discussion at a time.
+=======
+# wedge-product
+Wedge Product - Financial Forum - Capturing Step Two Addressable Market
+>>>>>>> 6bdca33084ef0e872a2ba4a11d8e6bf981821102
