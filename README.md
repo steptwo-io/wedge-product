@@ -230,6 +230,5 @@ For support, email support@steptwo.io or join our community discussions.
 
 **Wedge** - Building the future of financial community platforms, one discussion at a time.
 =======
-# wedge-product
-Wedge Product - Financial Forum - Capturing Step Two Addressable Market
->>>>>>> 6bdca33084ef0e872a2ba4a11d8e6bf981821102
+# testing github sync
+
