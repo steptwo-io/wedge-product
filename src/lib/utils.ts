@@ -57,3 +57,11 @@ export function formatRelativeTime(date: Date): string {
   const diffInYears = Math.floor(diffInDays / 365)
   return `${diffInYears}y ago`
 }
+
+export function formatDate(date: Date): string {
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  }).format(date)
+}

@@ -2,94 +2,46 @@ import { PostCard } from '@/components/post/post-card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Search, Filter, TrendingUp } from 'lucide-react'
+import { prisma } from '@/lib/db'
 
-// Sample stock picks data
-const stockPicks = [
-  {
-    id: '1',
-    title: 'Why I\'m Bullish on NVIDIA (NVDA) for Q4 2024',
-    content: 'NVIDIA continues to dominate the AI chip market with their latest H200 series. The demand for AI infrastructure is only growing, and NVDA is perfectly positioned to capitalize on this trend. Their data center revenue is up 409% YoY, and I don\'t see this slowing down anytime soon.',
-    type: 'STOCK_PICK' as const,
-    ticker: 'NVDA',
-    priceTarget: 850,
-    timeframe: '6 months',
-    reasoning: 'Strong AI demand, market leadership, expanding data center business',
-    riskLevel: 'HIGH' as const,
-    createdAt: new Date('2024-01-10T10:30:00Z'),
-    author: {
-      id: '1',
-      username: 'TechInvestor',
-      name: 'Sarah Chen',
-      avatar: null
+// This function runs on the server and fetches real stock picks
+async function getStockPicks() {
+  const picks = await prisma.post.findMany({
+    where: { 
+      type: 'STOCK_PICK' 
     },
-    _count: {
-      comments: 23,
-      votes: 45
+    include: {
+      author: {
+        select: {
+          id: true,
+          username: true,
+          name: true,
+          avatar: true
+        }
+      },
+      _count: {
+        select: {
+          comments: true,
+          votes: true
+        }
+      },
+      votes: {
+        select: {
+          type: true
+        }
+      }
     },
-    votes: [
-      { type: 'UPVOTE' as const },
-      { type: 'UPVOTE' as const },
-      { type: 'UPVOTE' as const },
-      { type: 'DOWNVOTE' as const }
-    ]
-  },
-  {
-    id: '2',
-    title: 'Apple (AAPL) - Strong Buy for Long-term Growth',
-    content: 'Apple\'s ecosystem continues to strengthen with services revenue growing 16% YoY. The iPhone 15 series shows strong demand, and the Vision Pro represents a new growth vector. Trading at a reasonable P/E of 28, this is a solid long-term hold.',
-    type: 'STOCK_PICK' as const,
-    ticker: 'AAPL',
-    priceTarget: 200,
-    timeframe: '12 months',
-    reasoning: 'Strong ecosystem, growing services revenue, reasonable valuation',
-    riskLevel: 'MEDIUM' as const,
-    createdAt: new Date('2024-01-09T15:20:00Z'),
-    author: {
-      id: '2',
-      username: 'ValueHunter',
-      name: 'Mike Johnson',
-      avatar: null
-    },
-    _count: {
-      comments: 18,
-      votes: 32
-    },
-    votes: [
-      { type: 'UPVOTE' as const },
-      { type: 'UPVOTE' as const },
-      { type: 'UPVOTE' as const }
-    ]
-  },
-  {
-    id: '3',
-    title: 'Tesla (TSLA) - High Risk, High Reward Play',
-    content: 'Tesla\'s energy business is the hidden gem. With solar and storage growing 40% YoY, this could be the next major revenue driver. However, the stock is volatile and highly dependent on Elon\'s decisions. Only for risk-tolerant investors.',
-    type: 'STOCK_PICK' as const,
-    ticker: 'TSLA',
-    priceTarget: 300,
-    timeframe: '18 months',
-    reasoning: 'Energy business growth, EV market leadership, but high volatility',
-    riskLevel: 'VERY_HIGH' as const,
-    createdAt: new Date('2024-01-08T11:45:00Z'),
-    author: {
-      id: '3',
-      username: 'RiskTaker',
-      name: 'Alex Rodriguez',
-      avatar: null
-    },
-    _count: {
-      comments: 31,
-      votes: 28
-    },
-    votes: [
-      { type: 'UPVOTE' as const },
-      { type: 'DOWNVOTE' as const },
-      { type: 'DOWNVOTE' as const }
-    ]
-  }
-]
+    orderBy: {
+      createdAt: 'desc'
+    }
+  })
 
-export default function StockPicksPage() {
+  return picks
+}
+
+export default async function StockPicksPage() {
+  const stockPicks = await getStockPicks()
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -128,7 +80,7 @@ export default function StockPicksPage() {
           <div className="text-sm text-muted-foreground">Avg Return</div>
         </div>
         <div className="bg-card p-4 rounded-lg border">
-          <div className="text-2xl font-bold">1,247</div>
+          <div className="text-2xl font-bold">{stockPicks.length}</div>
           <div className="text-sm text-muted-foreground">Total Picks</div>
         </div>
         <div className="bg-card p-4 rounded-lg border">
@@ -143,9 +95,15 @@ export default function StockPicksPage() {
 
       {/* Stock Picks */}
       <div className="space-y-4">
-        {stockPicks.map((pick) => (
-          <PostCard key={pick.id} post={pick} />
-        ))}
+        {stockPicks.length > 0 ? (
+          stockPicks.map((pick) => (
+            <PostCard key={pick.id} post={pick} />
+          ))
+        ) : (
+          <div className="text-center py-12 text-muted-foreground">
+            No stock picks yet. Be the first to share your analysis!
+          </div>
+        )}
       </div>
 
       {/* Load More */}
